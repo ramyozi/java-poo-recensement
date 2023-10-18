@@ -30,24 +30,35 @@ public class RecherchePopulationBorneService extends MenuService {
 			System.out.println(
 					"Choississez une population minimum (en milliers d'habitants): ");
 			String saisieMin = scanner.nextLine();
-
-			if (!estNombrePositif(saisieMin)) {
-                throw new IllegalArgumentException("La population minimale doit être un nombre positif.");
-            }
-			
+			int min = 0;
+			try {
+				min = Integer.parseInt(saisieMin) * 1000;
+				if (min < 0) {
+					throw new IllegalArgumentException(
+							"La population minimum ne peut pas être négative.");
+				}
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(
+						"La population minimum doit être un nombre entier.");
+			}
 			System.out.println(
 					"Choississez une population maximum (en milliers d'habitants): ");
 			String saisieMax = scanner.nextLine();
-			if (!estNombrePositif(saisieMax)) {
-                throw new IllegalArgumentException("La population maximale doit être un nombre positif.");
-            }
-
-			int min = Integer.parseInt(saisieMin) * 1000;
-			int max = Integer.parseInt(saisieMax) * 1000;
-			
-			if (max <= min) {
-                throw new IllegalArgumentException("La population maximale doit être supérieure à la population minimale.");
-            }
+			int max = 0;
+			try {
+				max = Integer.parseInt(saisieMax) * 1000;
+				if (max < 0) {
+					throw new IllegalArgumentException(
+							"La population maximum ne peut pas être négative.");
+				}
+				if (max < min) {
+					throw new IllegalArgumentException(
+							"La population maximum doit être supérieure à la population minimum.");
+				}
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(
+						"La population maximum doit être un nombre entier.");
+			}
 
 			List<Ville> villes = rec.getVilles();
 			for (Ville ville : villes) {
@@ -58,15 +69,13 @@ public class RecherchePopulationBorneService extends MenuService {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			System.err.println(
-					"Erreur : Veuillez saisir un code de département valide (chiffres uniquement).");
 		} catch (IllegalArgumentException e) {
 			System.err.println("Erreur : " + e.getMessage());
 		}
 	}
 
-	// Cette fonction vérifie si un code de département existe dans la liste des villes
+	// Cette fonction vérifie si un code de département existe dans la liste des
+	// villes
 	private boolean codeDepartementExiste(String codeDepartement,
 			List<Ville> villes) {
 		for (Ville ville : villes) {
@@ -77,14 +86,4 @@ public class RecherchePopulationBorneService extends MenuService {
 		}
 		return false;
 	}
-
-	private boolean estNombrePositif(String valeur) {
-		try {
-			int nombre = Integer.parseInt(valeur);
-			return nombre >= 0;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
 }
