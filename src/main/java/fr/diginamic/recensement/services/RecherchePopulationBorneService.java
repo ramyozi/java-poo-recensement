@@ -23,19 +23,31 @@ public class RecherchePopulationBorneService extends MenuService {
 					"Quel est le code du département recherché ? ");
 			String choix = scanner.nextLine();
 			if (!codeDepartementExiste(choix, rec.getVilles())) {
-		        throw new IllegalArgumentException("Le code du département est inconnu.");
-		    }
+				throw new IllegalArgumentException(
+						"Le code du département est inconnu.");
+			}
 
 			System.out.println(
 					"Choississez une population minimum (en milliers d'habitants): ");
 			String saisieMin = scanner.nextLine();
 
+			if (!estNombrePositif(saisieMin)) {
+                throw new IllegalArgumentException("La population minimale doit être un nombre positif.");
+            }
+			
 			System.out.println(
 					"Choississez une population maximum (en milliers d'habitants): ");
 			String saisieMax = scanner.nextLine();
+			if (!estNombrePositif(saisieMax)) {
+                throw new IllegalArgumentException("La population maximale doit être un nombre positif.");
+            }
 
 			int min = Integer.parseInt(saisieMin) * 1000;
 			int max = Integer.parseInt(saisieMax) * 1000;
+			
+			if (max <= min) {
+                throw new IllegalArgumentException("La population maximale doit être supérieure à la population minimale.");
+            }
 
 			List<Ville> villes = rec.getVilles();
 			for (Ville ville : villes) {
@@ -53,15 +65,26 @@ public class RecherchePopulationBorneService extends MenuService {
 			System.err.println("Erreur : " + e.getMessage());
 		}
 	}
-	
+
 	// Cette fonction vérifie si un code de département existe dans la liste des villes
-		private boolean codeDepartementExiste(String codeDepartement, List<Ville> villes) {
-		    for (Ville ville : villes) {
-		        if (ville.getCodeDepartement().equalsIgnoreCase(codeDepartement)) {
-		            return true;
-		        }
-		    }
-		    return false;
+	private boolean codeDepartementExiste(String codeDepartement,
+			List<Ville> villes) {
+		for (Ville ville : villes) {
+			if (ville.getCodeDepartement()
+					.equalsIgnoreCase(codeDepartement)) {
+				return true;
+			}
 		}
+		return false;
+	}
+
+	private boolean estNombrePositif(String valeur) {
+		try {
+			int nombre = Integer.parseInt(valeur);
+			return nombre >= 0;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 
 }
