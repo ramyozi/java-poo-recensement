@@ -1,8 +1,10 @@
 package fr.diginamic.recensement.services;
 
+import java.util.List;
 import java.util.Scanner;
 
 import fr.diginamic.recensement.entites.Recensement;
+import fr.diginamic.recensement.entites.Ville;
 
 /**
  * Classe représentant un service
@@ -20,4 +22,7 @@ public abstract class MenuService {
 	 * @param scanner scanner
 	 */
 	public abstract void traiter(Recensement recensement, Scanner scanner);
+	// Cette fonction vérifie si un code de département existe dans la liste des villes
+	
+		
 }

@@ -1,5 +1,7 @@
 package fr.diginamic.recensement.entites;
 
+import java.util.List;
+
 /**
  * Représente une ville
  * 
@@ -41,6 +43,8 @@ public class Ville implements EnsemblePop {
 		this.nom = nom;
 		this.population = population;
 	}
+	
+	
 
 	@Override
 	public String toString() {

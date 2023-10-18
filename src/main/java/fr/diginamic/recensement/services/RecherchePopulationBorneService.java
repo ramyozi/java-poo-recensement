@@ -22,6 +22,9 @@ public class RecherchePopulationBorneService extends MenuService {
 			System.out.println(
 					"Quel est le code du département recherché ? ");
 			String choix = scanner.nextLine();
+			if (!codeDepartementExiste(choix, rec.getVilles())) {
+		        throw new IllegalArgumentException("Le code du département est inconnu.");
+		    }
 
 			System.out.println(
 					"Choississez une population minimum (en milliers d'habitants): ");
@@ -50,5 +53,15 @@ public class RecherchePopulationBorneService extends MenuService {
 			System.err.println("Erreur : " + e.getMessage());
 		}
 	}
+	
+	// Cette fonction vérifie si un code de département existe dans la liste des villes
+		private boolean codeDepartementExiste(String codeDepartement, List<Ville> villes) {
+		    for (Ville ville : villes) {
+		        if (ville.getCodeDepartement().equalsIgnoreCase(codeDepartement)) {
+		            return true;
+		        }
+		    }
+		    return false;
+		}
 
 }
